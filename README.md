@@ -13,15 +13,13 @@ render 用于加载部分文件内容
 自定义Block
 
 list 加载部分列表内容
-
+```
 {% list menuId | row: rowquantity %}
-
     {{Data.Title}}
-    
 {% endlist %}
-
+```
 返回的数据为 
-```json
+```
 Data:{
     Id:0,    
     Title:'',    
@@ -36,10 +34,14 @@ Data:{
 }
 ```
 menu 加载单页面菜单内容
+```
 {% menu menuId %}
     {{Data.Title}}
 {% endmenu %}
-返回的数据为 Data:{
+```
+返回的数据为 
+```
+Data:{
     Id:0,
     Title:'',
     EnTitle:'',
@@ -50,19 +52,25 @@ menu 加载单页面菜单内容
         Content:'', 富文本内容
     }
 }
-
+```
 view 加载内容
+```
 {% view viewId %}
     {{Data.Title}}
 {% endview %}
-返回的数据为 Data:{
+```
+返回的数据为 
+```
+Data:{
         Id:0,
         Title:'', //标题
         Thumbnail:'', //缩略图
         Content:'', 富文本内容
     }
+```
 
 全局数据
+```
 Model:{
     Setting:{
         WebsiteName:'', //网站名称
@@ -170,3 +178,4 @@ Model:{
             Title:''
         }
     }
+```
