@@ -21,7 +21,7 @@ list 加载部分列表内容
 {% endlist %}
 
 返回的数据为 
-
+```json
 Data:{
     Id:0,    
     Title:'',    
@@ -34,7 +34,7 @@ Data:{
         CreateTime:datetime //日期
     }]
 }
-
+```
 menu 加载单页面菜单内容
 {% menu menuId %}
     {{Data.Title}}
