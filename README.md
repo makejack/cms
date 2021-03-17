@@ -5,25 +5,43 @@ CMS 内容管理系统
 Fluid是基于Liquid模板语言(https://liquid.bootcss.com/filters/slice/)
 
 自定义Tag
+
 render 用于加载部分文件内容
+
 {% render fileName %}
 
 自定义Block
+
 list 加载部分列表内容
+
 {% list menuId | row: rowquantity %}
+
     {{Data.Title}}
+    
 {% endlist %}
+
 返回的数据为 Data:{
+
     Id:0,
+    
     Title:'',
+    
     EnTitle:'',
+    
     Data:[{
+    
         Id:0,
+        
         Title:'', //标题
+        
         Thumbnail:'', //缩略图
+        
         Content:'', 富文本内容
+        
         CreateTime:datetime //日期
+        
     }]
+    
 }
 
 menu 加载单页面菜单内容
