@@ -20,28 +20,19 @@ list 加载部分列表内容
     
 {% endlist %}
 
-返回的数据为 Data:{
+返回的数据为 
 
-    Id:0,
-    
-    Title:'',
-    
+Data:{
+    Id:0,    
+    Title:'',    
     EnTitle:'',
-    
     Data:[{
-    
         Id:0,
-        
         Title:'', //标题
-        
         Thumbnail:'', //缩略图
-        
         Content:'', 富文本内容
-        
         CreateTime:datetime //日期
-        
     }]
-    
 }
 
 menu 加载单页面菜单内容
