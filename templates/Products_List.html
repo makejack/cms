@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="renderer" content="webkit">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <meta http-equiv="Pragma" content="no-cache">
+    <title>{{Setting.WebsiteTitle}}_{{Setting.WebsiteName}}</title>
+    <meta name="description" content="{{Setting.WebsiteDescription}}">
+    <meta name="keywords" content="{{Setting.WebsiteKeywords}}">
+    <link href="{{Setting.WebsiteAddressIcon}}" rel="shortcut icon" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="css/aswiper.min.css">
+    <link rel="stylesheet" type="text/css" href="css/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="css/layout.css">
+    <script type="text/javascript" src="js/jquery-1.12.4.min.js"></script>
+    <script src="js/share.js"></script>
+    <link rel="stylesheet" href="css/share_style0_16.css">
+</head>
+
+<body>
+    {% render Header %}
+    <a href="javascript:;" class="exit-off-canvas"></a>
+    <div class="inside-banner "> <img src="{{BannerUrl}}">
+    </div>
+    <div class="full-inside-subnav">
+        <div class="commonweb clearfix">
+            <div class="inside-subnav">
+                <h3 class="channel-title">{{Data.Data.Title}}</h3>
+                <div class="subnav clearfix">
+                    <ul class="clearfix">
+
+                        {% for item in Data.Categorys %}
+                        <li class="{% if item.IsActive %}cur{% endif %}">
+                            <a href="/?mid={{item.Id}}" title="{{item.Title}}">{{item.Title}}</a>
+                        </li>
+                        {% endfor %}
+
+                    </ul>
+                    <a href="javascript:;" class="sub-btn sub-prev" style="display: none;"></a> <a href="javascript:;"
+                        class="sub-btn sub-next" style="display: none;"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="common-clumb-min commonweb clearfix">
+        <div class="clumb-title fl">
+            <h3 class="cn font22">{{Setting.WebsiteTitle}}</h3>
+        </div>
+    </div>
+
+    <div class="product-list commonweb">
+        <ul class="clearfix">
+            {% for item in Data.Data %}
+            <li class="col-xs-6 col-sm-3">
+                <a href="/?vid={{item.Id}}" title="{{item.Title}}">
+                    <p class="pro-img">
+                        <img src="{{item.Thumbnail}}" alt="{{item.Title}}">
+                    </p>
+                    <p class="pro-text">{{item.Title}}</p>
+                </a>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="commonweb padtbb">
+        <div class="pages">
+            <ul>
+                {% if Data.CurrentPage > 5 %}
+                <li><a href="/?mid={{Id}}&page=1">首页</a></li>
+                {% endif %}
+                {% if Data.CurrentPage == 1 %}
+                <li>上一页</li>
+                {% else %}
+                <li><a href="/?mid={{Id}}&page={{Data.CurrentPage | minus: 1}}">上一页</a></li>
+                {% endif %}
+                {% for page in (Data.Start..Data.End) %}
+                {% if page == Data.CurrentPage %}
+                <li class="thisclass">{{page}}</li>
+                {% else %}
+                <li><a href="/?mid={{Id}}&page={{page}}">{{page}}</a></li>
+                {% endif %}
+                {% endfor %}
+                {% if Data.CurrentPage >= Data.TotalPage %}
+                <li>下一页</li>
+                {% else %}
+                <li><a href="/?mid={{Id}}&page={{Data.CurrentPage | plus: 1}}">下一页</a></li>
+                <li><a href="/?mid={{Id}}&page={{Data.TotalPage}}">末页</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+
+    {% render Footer %}
+
+</body>
+
+</html>

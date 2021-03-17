@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="renderer" content="webkit">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <meta http-equiv="Pragma" content="no-cache">
+    <title>{{Setting.WebsiteTitle}}_{{Setting.WebsiteName}}</title>
+    <meta name="description" content="{{Setting.WebsiteDescription}}">
+    <meta name="keywords" content="{{Setting.WebsiteKeywords}}">
+    <link href="{{Setting.WebsiteAddressIcon}}" rel="shortcut icon" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="css/aswiper.min.css">
+    <link rel="stylesheet" type="text/css" href="css/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="css/layout.css">
+    <script type="text/javascript" src="js/jquery-1.12.4.min.js"></script>
+    <script src="js/share.js"></script>
+    <link rel="stylesheet" href="css/share_style0_16.css">
+    <link href="https://cdn.bootcdn.net/ajax/libs/quill/1.3.7/quill.snow.min.css" rel="stylesheet">
+</head>
+
+<body>
+    {% render Header %}
+    <a href="javascript:;" class="exit-off-canvas"></a>
+    <div class="inside-banner "> <img src="{{BannerUrl}}">
+    </div>
+    <div class="full-inside-subnav">
+        <div class="commonweb clearfix">
+            <div class="inside-subnav">
+                <h3 class="channel-title">{{Data.Data.Title}}</h3>
+                <div class="subnav clearfix">
+                    <ul class="clearfix">
+
+                        {% for item in Data.Categorys %}
+                        <li class="{% if item.IsActive %}cur{% endif %}">
+                            <a href="/?mid={{item.Id}}" title="{{item.Title}}">{{item.Title}}</a>
+                        </li>
+                        {% endfor %}
+
+                    </ul>
+                    <a href="javascript:;" class="sub-btn sub-prev" style="display: none;"></a> <a href="javascript:;"
+                        class="sub-btn sub-next" style="display: none;"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="pro-datial-tab ">
+        <div class="tab-optionsbox">
+            <div class="tab-options clearfix">
+                <div class="commonweb">
+                    <a href="javascript:;" class="cur">{{Data.Data.Title}}</a>
+                </div>
+            </div>
+        </div>
+        <div class="commonweb">
+            <div class="composimin">
+                <div class=" padtb Technical ql-editor">
+                    {{Data.Data.Content}}
+                </div>
+            </div>
+            <div class="news-detail-foot">
+                <dl class="clearfix">
+                    <dd class="clearfix">上一篇：
+                        {% if Data.Prev == null %}
+                        没有了
+                        {% else %}
+                        <a href="/?vid={{Data.Prev.Id}}">{{Data.Prev.Title}}</a>
+                        {% endif %}
+                    </dd>
+                    <dt class="clearfix">下一篇：
+                        {% if Data.Next == null %}
+                        没有了
+                        {% else %}
+                        <a href="/?vid={{Data.Next.Id}}">{{Data.Next.Title}}</a>
+                        {% endif %}
+                    </dt>
+                </dl>
+            </div>
+        </div>
+    </div>
+
+    {% render Footer %}
+
+    <script>window._bd_share_config = { "common": { "bdSnsKey": {}, "bdText": "", "bdMini": "2", "bdMiniList": false, "bdPic": "", "bdStyle": "0", "bdSize": "32" }, "share": {} }; with (document) 0[(getElementsByTagName('head')[0] || body).appendChild(createElement('script')).src = 'http://bdimg.share.baidu.com/static/api/js/share.js?v=89860593.js?cdnversion=' + ~(-new Date() / 36e5)];</script>
+</body>
+
+</html>

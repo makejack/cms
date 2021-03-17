@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="renderer" content="webkit">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <meta http-equiv="Pragma" content="no-cache">
+    <title>{{Setting.WebsiteTitle}}_{{Setting.WebsiteName}}</title>
+    <meta name="description" content="{{Setting.WebsiteDescription}}">
+    <meta name="keywords" content="{{Setting.WebsiteKeywords}}">
+    <link href="{{Setting.WebsiteAddressIcon}}" rel="shortcut icon" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="css/aswiper.min.css">
+    <link rel="stylesheet" type="text/css" href="css/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="css/layout.css">
+    <script type="text/javascript" src="js/jquery-1.12.4.min.js"></script>
+    <script src="js/share.js"></script>
+    <link rel="stylesheet" href="css/share_style0_16.css">
+</head>
+
+<body>
+    {% render Header %}
+    <a href="javascript:;" class="exit-off-canvas"></a>
+    <div class="inside-banner "> <img src="{{BannerUrl}}">
+    </div>
+    <div class="full-inside-subnav">
+        <div class="commonweb clearfix">
+            <div class="inside-subnav">
+                <h3 class="channel-title">{{Data.Data.Title}}</h3>
+                <div class="subnav clearfix">
+                    <ul class="clearfix">
+
+                        {% for item in Data.Categorys %}
+                        <li class="{% if item.IsActive %}cur{% endif %}">
+                            <a href="/?mid={{item.Id}}" title="{{item.Title}}">{{item.Title}}</a>
+                        </li>
+                        {% endfor %}
+
+                    </ul>
+                    <a href="javascript:;" class="sub-btn sub-prev" style="display: none;"></a> <a href="javascript:;"
+                        class="sub-btn sub-next" style="display: none;"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="common-clumb-min commonweb clearfix">
+        <div class="clumb-title fl">
+            <h3 class="cn font22">{{Setting.WebsiteTitle}}</h3>
+        </div>
+    </div>
+
+    <div class="contact-minbox commonweb padtb">
+        <div class="contact-dl clearfix">
+            <div class="thumb"><img src="images/about.jpg"></div>
+            <div class="infor">
+                <h3 class="font24">{{Setting.WebsiteCustomParams[1].Value}}</h3>
+                <p class="PS clearfix">
+                    <span class="name">电话： </span> <span class="text"> {{Setting.WebsiteCustomParams[2].Value}}</span>
+                </p>
+                <p class="PS clearfix">
+                    <span class="name">邮箱： </span>
+                    <span class="text">
+                        <a href="/cdn-cgi/l/email-protection" class="__cf_email__"
+                            data-cfemail="046560696d6a446560696d6a2a676b69">{{Setting.WebsiteCustomParams[3].Value}}</a>
+                    </span>
+                </p>
+                <p class="PS clearfix">
+                    <span class="name">地址： </span>
+                    <span class="text">
+                        <span style="white-space:normal;">{{Setting.WebsiteCustomParams[4].Value}}</span>
+                    </span>
+                </p>
+            </div>
+        </div>
+        <div class="map">
+            <script type="text/javascript" src="js/map.js"></script>
+            <style type="text/css">
+                #allmap {
+                    width: 100%;
+                    height: 400px;
+                    margin-top: 20px;
+                    overflow: hidden;
+                    font-family: "微软雅黑";
+                }
+
+                #allmap b {
+                    color: #CC5522;
+                    font-size: 14px;
+                }
+
+                #allmap img {
+                    max-width: none;
+                }
+            </style>
+            <div id="allmap"
+                style="overflow: hidden; position: relative; z-index: 0; background-color: rgb(243, 241, 236); color: rgb(0, 0, 0); text-align: left;">
+            </div>
+
+            <script type="text/javascript">
+                var map = new BMap.Map("allmap");
+                map.centerAndZoom(new BMap.Point(114.058026, 22.508798), 18);
+                var marker1 = new BMap.Marker(new BMap.Point(114.058026, 22.508798));  // 创建标注
+                map.addOverlay(marker1);              // 将标注添加到地图中
+                //marker1.setAnimation(BMAP_ANIMATION_BOUNCE); //跳动的动画				
+                //创建信息窗口 
+                var infoWindow1 = new BMap.InfoWindow("<b>{{Setting.WebsiteCustomParams[1].Value}}</b><br>地址：{{Setting.WebsiteCustomParams[4].Value}}<br>电话：{{Setting.WebsiteCustomParams[2].Value}}");
+                marker1.openInfoWindow(infoWindow1);
+                //marker1.addEventListener("click", function(){this.openInfoWindow(infoWindow1);});	
+                //向地图中添加缩放控件
+                var ctrl_nav = new BMap.NavigationControl({ anchor: BMAP_ANCHOR_TOP_LEFT, type: BMAP_NAVIGATION_CONTROL_LARGE });
+                map.addControl(ctrl_nav);
+                //向地图中添加缩略图控件
+                var ctrl_ove = new BMap.OverviewMapControl({ anchor: BMAP_ANCHOR_BOTTOM_RIGHT, isOpen: 1 });
+                map.addControl(ctrl_ove);
+                //向地图中添加比例尺控件
+                var ctrl_sca = new BMap.ScaleControl({ anchor: BMAP_ANCHOR_BOTTOM_LEFT });
+                map.addControl(ctrl_sca);
+
+                map.enableDragging();//启用地图拖拽事件，默认启用(可不写)
+                map.enableScrollWheelZoom();//启用地图滚轮放大缩小
+                map.enableDoubleClickZoom();//启用鼠标双击放大，默认启用(可不写)
+                map.enableKeyboard();//启用键盘上下左右键移动地
+            </script>
+        </div>
+    </div>
+
+    {% render Footer %}
+</body>
+
+</html>

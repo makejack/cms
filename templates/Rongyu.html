@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="renderer" content="webkit">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <meta name="format-detection" content="telephone=no">
+    <meta http-equiv="Pragma" content="no-cache">
+    <title>{{Setting.WebsiteTitle}}_{{Setting.WebsiteName}}</title>
+    <meta name="description" content="{{Setting.WebsiteDescription}}">
+    <meta name="keywords" content="{{Setting.WebsiteKeywords}}">
+    <link href="{{Setting.WebsiteAddressIcon}}" rel="shortcut icon" type="image/x-icon">
+    <link rel="stylesheet" type="text/css" href="css/aswiper.min.css">
+    <link rel="stylesheet" type="text/css" href="css/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="css/layout.css">
+    <script type="text/javascript" src="js/jquery-1.12.4.min.js"></script>
+    <script src="js/share.js"></script>
+    <link rel="stylesheet" href="css/share_style0_16.css">
+</head>
+
+<body>
+    {% render Header %}
+    <a href="javascript:;" class="exit-off-canvas"></a>
+    <div class="inside-banner "> <img src="{{BannerUrl}}">
+    </div>
+    <div class="full-inside-subnav">
+        <div class="commonweb clearfix">
+            <div class="inside-subnav">
+                <h3 class="channel-title">{{Data.Data.Title}}</h3>
+                <div class="subnav clearfix">
+                    <ul class="clearfix">
+
+                        {% for item in Data.Categorys %}
+                        <li class="{% if item.IsActive %}cur{% endif %}">
+                            <a href="/?mid={{item.Id}}" title="{{item.Title}}">{{item.Title}}</a>
+                        </li>
+                        {% endfor %}
+
+                    </ul>
+                    <a href="javascript:;" class="sub-btn sub-prev" style="display: none;"></a> <a href="javascript:;"
+                        class="sub-btn sub-next" style="display: none;"></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="common-clumb-min commonweb clearfix">
+        <div class="clumb-title fl">
+            <h3 class="cn font22">{{Setting.WebsiteTitle}}</h3>
+        </div>
+    </div>
+
+    <div class="Honors-min commonweb padtb">
+        <div class="Honor-list">
+            <ul class="clearfix" id="masonry" style="position: relative; height: 1070.86px;">
+                {% for item in Data.Data %}
+                <li class="col-sm-4 shown">
+                    <a href="javascript:;">
+                        <!--图片尺寸728*460-->
+                        <p class="elc-img">
+                            <img src="{{item.Thumbnail}}" alt="{{item.Title}}">
+                        </p>
+                        <p class="elc-text">{{item.Title}}</p>
+                    </a>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="pages">
+            <ul>
+                {% if Data.CurrentPage > 5 %}
+                <li><a href="/?mid={{Id}}&page=1">首页</a></li>
+                {% endif %}
+                {% if Data.CurrentPage == 1 %}
+                <li>上一页</li>
+                {% else %}
+                <li><a href="/?mid={{Id}}&page={{Data.CurrentPage | minus: 1}}">上一页</a></li>
+                {% endif %}
+                {% for page in (Data.Start..Data.End) %}
+                {% if page == Data.CurrentPage %}
+                <li class="thisclass">{{page}}</li>
+                {% else %}
+                <li><a href="/?mid={{Id}}&page={{page}}">{{page}}</a></li>
+                {% endif %}
+                {% endfor %}
+                {% if Data.CurrentPage >= Data.TotalPage %}
+                <li>下一页</li>
+                {% else %}
+                <li><a href="/?mid={{Id}}&page={{Data.CurrentPage | plus: 1}}">下一页</a></li>
+                <li><a href="/?mid={{Id}}&page={{Data.TotalPage}}">末页</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+
+    <!--弹窗-->
+    <div class="probg"></div>
+    <div class="thumb-popup"> <span class="close"></span>
+        <div class="thumb-wraper">
+            <div class="thumb-copy-wrapper swiper-container-horizontal">
+                <ul class="swiper-wrapper" style="transition-duration: 0ms;">
+                </ul>
+            </div>
+            <div class="popup-btn swiper-left"></div>
+            <div class="popup-btn swiper-right"></div>
+            <div class="thumb-text"> <span class="thumbtext-list"></span> </div>
+        </div>
+    </div>
+    {% render Footer %}
+    <script src="js/modernizr.custom.js"></script>
+    <script src="js/masonry.pkgd.min.js"></script>
+    <script src="js/imagesloaded.pkgd.min.js"></script>
+    <script src="js/classie.js"></script>
+    <script src="js/animonscroll.js"></script>
+    <script>
+
+        $(window).load(function () {
+            // 加载按钮
+            var loading = $('.loading');
+            // 加载开关 默认关闭
+            loading.data("on", false);
+            // loading.hide();
+            var win = $(window);
+            // 记录初始数据条数
+            var itemL = $('.Honor-left').find('li').length;
+            var totalpage = 2;
+            var curpage = 1;
+
+            win.scroll(function () {
+                // 资质荣誉弹窗
+                var _popW = $(window).width() * 0.94 < 800 ? $(window).width() * 0.94 : 800;
+                var _popH = $(window).height() * 0.65 < 600 ? $(window).height() * 0.65 : 600;
+                var _poprate = _popW / _popH;
+
+                function getSlide(originImgs, popupSwStr, numWrap) {
+                    var $thumb = $(originImgs);
+                    var $thumbSwiper = $(popupSwStr).html('');
+                    var slide_length = $thumb.length;
+                    for (var i = 0; i < slide_length; i++) {
+                        var $img = $thumb.eq(i);
+                        var imgW = $img.width();
+                        var imgH = $img.height();
+                        var rate = imgW / imgH;
+                        var $item = $('<li class="swiper-slide"><img src="' + $thumb[i].src + '"></li>');
+                        if (rate < _poprate) {
+                            $item.find('img').addClass('maxh');
+                        }
+                        ; $thumbSwiper.append($item);
+                    }
+                    ; $(numWrap).html(slide_length);
+                };
+                getSlide(".Honor-list ul img", ".thumb-popup .swiper-wrapper", ".thumb-count");
+                if (typeof Swiper != 'undefined') {
+                    var thumbCopySwiper = new Swiper(".thumb-copy-wrapper", {
+                        speed: 1000,
+                        prevButton: '.swiper-left',
+                        nextButton: '.swiper-right',
+                        loop: false,
+                        pagination: "",
+                        observer: true,
+                        observeParents: true,
+                        onSlideChangeStart: function (swiper) {
+                            var thisText = $(".Honor-list li").eq(thumbCopySwiper.activeIndex).find(" p").text();
+
+                            $(".thumbtext-list").html(thisText);
+                            $(".thumb-index").html(thumbCopySwiper.activeIndex + 1);
+                        }
+                    });
+
+                };
+                $(document).on("click", ".Honor-list li a", function (ev) {
+                    ev.preventDefault();
+                    var thisIndex = $(this).parents("li").index();
+                    var thisText = $(this).find(".elc-text").text();
+                    console.log(thisIndex);
+                    thumbCopySwiper.slideTo($(this).parents("li").index(), 0, false);
+
+                    $(".thumbtext-list").html(thisText);
+                    $(".thumb-index").html(thisIndex + 1);
+                    $(".thumb-popup").fadeIn(300);
+                    $(".probg").fadeIn(300);
+                    var $height = $(window).height();
+                    $(".thumb-popup ul li").css("height", $height);
+                });
+
+
+
+                var totalheight = parseFloat(win.height()) + parseFloat(win.scrollTop());
+
+                if ($(".Honor-left").height() <= totalheight) {
+                    //没有更多数据就不执行
+                    if (!loading.data("on")) return;
+                    curpage += 1;
+                    if (curpage > totalpage) {
+                        loading.data("on", false);//关闭加载更多
+                        // loading.find('span').text('就只有这么多了');
+                        loading.show();
+
+                    } else {
+                        $.ajax({
+                            url: url.replace("{page}", curpage),
+                            success: function (res) {
+                                // 数据延时1000毫秒追加
+
+                                var time = setTimeout(function () {
+                                    $(con).append($(res).find(con).children());
+                                    new AnimOnScroll(document.getElementById('masonry'), {
+                                        minDuration: 0.4,
+                                        maxDuration: 0.7,
+                                        viewportFactor: 0.2
+                                    });
+                                    if (curpage > totalpage) {
+                                        loading.data("on", false);
+                                        $(".loadEffect").html("")
+                                        loading.text('');
+                                        loading.show();
+                                    }
+                                    clearTimeout(time);
+                                }, 1000);
+                            }
+                        });
+                    }
+
+                }
+            })
+
+            $(window).resize(function () {
+                new AnimOnScroll(document.getElementById('masonry'), {
+                    minDuration: 0.4,
+                    maxDuration: 0.7,
+                    viewportFactor: 0.2
+                });
+            })
+        })
+    </script>
+</body>
+
+</html>

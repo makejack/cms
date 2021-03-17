@@ -1,0 +1,102 @@
+<footer class="footer" style="visibility: visible; position: static">
+  <div class="footer-top commonweb clearfix">
+    <ul class="clearfix">
+      {% for nav in Menus %}
+      <li class="li1">
+        <h3>
+          {% if nav.Type == 0 %}
+          <a href="/?mid={{nav.Id}}" title="{{nav.MenuName}}">{{nav.MenuName}}</a>
+          {% else %}
+          <a href="{{nav.ExternalUrl}}" title="{{nav.MenuName}}">{{nav.MenuName}}</a>
+          {% endif %}
+          <span class="plus icon"></span>
+        </h3>
+        {% if nav.Children.size > 0 %}
+        <p class="footer-sub sub-box" style="display: block">
+          {% for child in nav.Children %}
+          {% if child.Type == 0 %}
+          <a href="/?mid={{child.Id}}" title="{{child.MenuName}}">{{child.MenuName}}</a>
+          {% else%}
+          <a href="{{child.ExternalUrl}}" title="{{child.MenuName}}">{{child.MenuName}}</a>
+          {% endif %}
+          {% endfor %}
+        </p>
+        {% endif %}
+      </li>
+      {% endfor %}
+      <li class="li2 fr" style="float: right">
+        <p><img src="{{Setting.WebsiteCustomParams[0].Value}}" /></p>
+        <p class="telnum">{{Setting.Copyright}}</p>
+        <p>
+          <a href="http://beian.miit.gov.cn/" target="_blank" rel="nofollow">{{Setting.CaseNumber}}</a>
+        </p>
+      </li>
+    </ul>
+  </div>
+</footer>
+<a class="zdsbacktop" href="javascript:"></a>
+<script type="text/javascript" src="js/scrollbar.js"></script>
+<script type="text/javascript" src="js/jquery.countup.min.js"></script>
+<script type="text/javascript" src="js/swiper.jquery.min.js"></script>
+<script type="text/javascript" src="js/wow.min.js"></script>
+<script>
+  var wow = new WOW({
+    boxClass: "wow",
+    animateClass: "animated",
+    offset: 0,
+    mobile: true,
+    live: true,
+  });
+  wow.init();
+</script>
+<script src="js/layout.js"></script>
+<div id="google_translate_element"></div>
+<script type="text/javascript"
+  src="https://translate.google.cn//translate_a/element.js?cb=googleTranslateElementInit"></script>
+<script type="text/javascript">
+  $(function () {
+    $("#zh_cnlan").click(function () {
+      translate(0);
+    });
+    $("#enlan").click(function () {
+      translate(1);
+    });
+    $("#zh_twlan").click(function () {
+      translate(2);
+    });
+  });
+
+  function translate(index) {
+    var select = document.getElementsByClassName("goog-te-combo")[0];
+    if (select) {
+      select.selectedIndex = index;
+      select.addEventListener("click", function () {
+        select.dispatchEvent(new Event("change"));
+      });
+      select.click();
+
+      sessionStorage.setItem("language", index);
+    }
+  }
+
+  function googleTranslateElementInit() {
+    $.when(
+      new google.translate.TranslateElement(
+        {
+          pageLanguage: "zh-CN",
+          includedLanguages: "zh-CN,en,zh-TW",
+          layout: google.translate.TranslateElement.FloatPosition.TOP_LEFT,
+        },
+        "google_translate_element"
+      )
+    ).done(function () {
+      var language = sessionStorage.getItem("language");
+      if (language) {
+        translate(language);
+      }
+
+      $("body").attr("style", "");
+      $("#goog-gt-tt").remove();
+    });
+  }
+</script>

@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <meta name="renderer" content="webkit" />
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  <meta name="format-detection" content="telephone=no" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <title>{{Setting.WebsiteTitle}}_{{Setting.WebsiteName}}</title>
+  <meta name="description" content="{{Setting.WebsiteDescription}}" />
+  <meta name="keywords" content="{{Setting.WebsiteKeywords}}" />
+  <link href="{{Setting.WebsiteAddressIcon}}" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" type="text/css" href="css/aswiper.min.css" />
+  <link rel="stylesheet" type="text/css" href="css/animate.min.css" />
+  <link rel="stylesheet" type="text/css" href="css/layout.css" />
+  <script type="text/javascript" src="js/jquery-1.12.4.min.js"></script>
+  <script src="js/share.js"></script>
+  <link rel="stylesheet" href="css/share_style0_16.css" />
+</head>
+
+<body>
+  {% render Header %}
+  <a href="javascript:;" class="exit-off-canvas"></a>
+  <!-- 轮播图 -->
+  {% list 12 %}
+  <div class="indexbanner swiper-container swiper-container-horizontal">
+    <ul class="swiper-wrapper clearfix" style="
+          transform: translate3d(-5271px, 0px, 0px);
+          transition-duration: 0ms;
+        ">
+      {% for item in Data.Data %}
+      <li class="swiper-slide" style="width: 1757px">
+        <a href="/?vid={{item.Id}}">
+          <img class="img" src="{{item.Thumbnail}}" mobile-img="{{item.Thumbnail}}" pc-img="{{item.Thumbnail}}"
+            alt="{{item.Title}}" /></a>
+      </li>
+      {% endfor%}
+    </ul>
+    <div class="ipages commonweb swiper-pagination-clickable swiper-pagination-bullets"></div>
+  </div>
+  {% endlist %}
+  <!-- 新闻 -->
+  {% list 8 | row: 10 %}
+  <div class="indxNewsmin commonweb padtb">
+    <div class="index-text center wow fadeInDown animated" style="visibility: visible; animation-name: fadeInDown">
+      <h2 class="cn font30">{{Data.Title}}</h2>
+      <h3 class="en font24">{{Data.EnTitle}}</h3>
+    </div>
+    <div class="indxNews-wraper">
+      <div class="inxnews-list swiper-container-horizontal">
+        <ul class="clearfix swiper-wrapper">
+          {% for item in Data.Data %}
+          <li class="swiper-slide wow fadeInLeft" style="
+                width: 277.5px;
+                visibility: visible;
+                animation-name: fadeInLeft;
+                margin-right: 30px;
+              ">
+            <a href="/?vid={{item.Id}}" title="{{ item.Title }}">
+              <p class="tiothumb">
+                <img src="{{item.Thumbnail}}" alt="{{ item.Title }}" />
+              </p>
+              <div class="tioinfor">
+                <p class="text">{{ item.Title }}</p>
+                <span class="date">
+                  {{ item.CreateTime | date: "%Y-%m-%d" }}
+                </span>
+              </div>
+            </a>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
+      <a href="javascript:;" class="index-btn index-prev swiper-button-disabled"></a>
+      <a href="javascript:;" class="index-btn index-next"></a>
+    </div>
+    <div class="index-more center wow fadeInUp" style="visibility: hidden; animation-name: none">
+      <a href="/?mid={{Data.Id}}">了解更多</a>
+    </div>
+  </div>
+  {% endlist %}
+  <div class="indxAboutus clearfix">
+    <div class="par-posimg wow fadeInLeft" style="
+          background: url('images/about.jpg') center center no-repeat;
+          visibility: hidden;
+          animation-name: none;
+        ">
+      <!-- <div class="par-text">
+          <h2 class="font32">质量筑品牌，服务创未来</h2>
+          <h3 class="font22 fontbold">
+            Quality builds brand, service creates future
+          </h3>
+          <p>某某股份为打造世界名牌而做出了不懈的努力</p>
+        </div> -->
+    </div>
+    <!-- 关于我们 -->
+    {% menu 3 %}
+    <div class="par-content wow fadeInRight" style="visibility: hidden; animation-name: none">
+      <h2 class="font34 cd82019">{{Data.Title}}</h2>
+      {{ Data.Data.Content | truncate: 180 | replace: "<p>&nbsp;</p>","" }}
+      <p class="visible-lg">&nbsp;</p>
+      <div class="index-more wow fadeInUp" style="visibility: hidden; animation-name: none">
+        <a href="http://zf021708.demo.kangjingept.com/demo207/a/about/">了解更多</a>
+      </div>
+    </div>
+    {% endmenu %}
+  </div>
+  <!-- 解决方案 -->
+  {% list 12 %}
+  <div class="inxSolution padtb" style="background: url(/images/jj.jpg) no-repeat 0 0">
+    <div class="commonweb">
+      <div class="index-text center wow fadeInDown" style="visibility: hidden; animation-name: none">
+        <h2 class="cn font30 cffffff">{{Data.Title}}</h2>
+        <h3 class="en font24">{{Data.EnTitle}}</h3>
+      </div>
+      <div class="inxSolut-wrapper">
+        <div class="inxSolut-min swiper-container-horizontal">
+          <ul class="clearfix swiper-wrapper">
+            {% for item in Data.Data %}
+            <li class="swiper-slide wow fadeInLeft" style="
+                  width: 277.5px;
+                  visibility: hidden;
+                  animation-name: none;
+                  margin-right: 30px;
+                ">
+              <a href="/?vid={{item.Id}}">
+                <p class="solut-img">
+                  <img src="{{item.Thumbnail}}" alt="{{item.Title}}" />
+                </p>
+                <div class="solut-text">
+                  <h3 class="cn font16">{{item.Title}}</h3>
+                </div>
+              </a>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+        <div class="ipages commonweb swiper-pagination-bullets"></div>
+        <a href="javascript:;" class="index-btn index-prev swiper-button-disabled"></a>
+        <a href="javascript:;" class="index-btn index-next"></a>
+      </div>
+      <div class="index-more center wow fadeInUp" style="visibility: hidden; animation-name: none">
+        <a href="/?mid={{Data.Id}}">了解更多</a>
+      </div>
+    </div>
+  </div>
+  {% endlist %} {% list 12 %}
+  <div class="inxPartner padtb">
+    <div class="commonweb">
+      <div class="index-text center wow fadeInDown" style="visibility: hidden; animation-name: none">
+        <h2 class="cn font30">{{Data.Title}}</h2>
+        <h3 class="en font24"></h3>
+      </div>
+      <div class="inxpart-list wow fadeInUp" style="visibility: hidden; animation-name: none">
+        <div class="partner-wrapper swiper-container-horizontal">
+          <ul class="clearfix swiper-wrapper">
+            {% for item in Data.Data %}
+            <li class="swiper-slide" style="width: 220px; margin-right: 25px">
+              <a href="javascript:;">
+                <img src="{{item.Thumbnail}}" alt="{{item.Title}}" /></a>
+            </li>
+            {% endfor %}
+          </ul>
+        </div>
+        <a href="javascript:;" class="index-btn index-prev swiper-button-disabled"></a>
+        <a href="javascript:;" class="index-btn index-next"></a>
+      </div>
+    </div>
+  </div>
+  {% endlist %} {% render Footer %}
+  <script type="text/javascript" src="js/su_new.js"></script>
+</body>
+
+</html>

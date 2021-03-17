@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+  <meta name="renderer" content="webkit" />
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black" />
+  <meta name="format-detection" content="telephone=no" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <title>{{Setting.WebsiteTitle}}_{{Setting.WebsiteName}}</title>
+  <meta name="description" content="{{Setting.WebsiteDescription}}" />
+  <meta name="keywords" content="{{Setting.WebsiteKeywords}}" />
+  <link href="{{Setting.WebsiteAddressIcon}}" rel="shortcut icon" type="image/x-icon" />
+  <link rel="stylesheet" type="text/css" href="css/aswiper.min.css" />
+  <link rel="stylesheet" type="text/css" href="css/animate.min.css" />
+  <link rel="stylesheet" type="text/css" href="css/layout.css" />
+  <script type="text/javascript" src="js/jquery-1.12.4.min.js"></script>
+  <script src="js/share.js"></script>
+  <link rel="stylesheet" href="css/share_style0_16.css" />
+</head>
+
+<body>
+  {% render Header %}
+  <a href="javascript:;" class="exit-off-canvas"></a>
+  <div class="inside-banner"><img src="{{BannerUrl}}" /></div>
+  <div class="full-inside-subnav">
+    <div class="commonweb clearfix">
+      <div class="inside-subnav">
+        <h3 class="channel-title">{{Data.Data.Title}}</h3>
+        <div class="subnav clearfix">
+          <ul class="clearfix">
+            {% for item in Data.Categorys %}
+            <li class="{% if item.IsActive %}cur{% endif %}">
+              <a href="/?mid={{item.Id}}" title="{{item.Title}}">{{item.Title}}</a>
+            </li>
+            {% endfor %}
+          </ul>
+          <a href="javascript:;" class="sub-btn sub-prev" style="display: none"></a>
+          <a href="javascript:;" class="sub-btn sub-next" style="display: none"></a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="common-clumb-min commonweb clearfix">
+    <div class="clumb-title fl">
+      <h3 class="cn font22">{{Setting.WebsiteTitle}}</h3>
+    </div>
+  </div>
+
+  <div class="Comprepairform commonweb padtb">
+    <form class="form-horizontal" action="#" enctype="multipart/form-data" method="post">
+      <input type="hidden" name="Id" value="{{Id}}" />
+      <div class="Comprepair">
+        <ul class="clearfix">
+          {% for item in Data.Data %}
+          <li class="{% if item.Type == 1 %}litextarea{% endif %}">
+            <label class="clearfix">
+              <span>{% if item.IsRequired %}<em style="color: red">*</em>{% endif %}{{item.Name}}：</span>
+              {% if item.Type == 0 %}
+              <input type="text" name="{{item.Name}}" id="{{item.Name}}" value=""
+                class="inputext {% if item.IsRequired %} isRequired {% endif %}" placeholder="{{item.Name}}" />
+              {% elsif item.Type == 1 %}
+              <textarea name="{{item.Name}}" id="{{item.Name}}" class="{% if item.IsRequired %} isRequired {% endif %}"
+                placeholder="{{item.Name}}"></textarea>
+              {% else %}
+              <input type="text" name="{{item.Name}}" id="{{item.Name}}" value=""
+                class="inputext {% if item.IsRequired %} isRequired {% endif %}" style="display: none" />
+              <input type="file" class="inputext" accept="image/*" />
+              {% endif %}
+            </label>
+          </li>
+          {% endfor %}
+          <li class="lisubmit">
+            <label class="clearfix">
+              <input type="submit" value="提交" class="submit" id="tj" />
+            </label>
+          </li>
+        </ul>
+      </div>
+    </form>
+
+    <script type="text/javascript">
+      $(function () {
+        $("#tj").click(function () {
+          //alert(1)
+
+          var valid = validate();
+          if (!valid) return false;
+
+          uploadImg();
+
+          return false;
+        });
+      });
+
+      function validate() {
+        var inputs = $(".isRequired");
+        for (let index = 0; index < inputs.length; index++) {
+          const element = inputs[index];
+          if (element.value == "") {
+            var nextElement = $(element).next();
+            if (nextElement.length > 0) {
+              if (nextElement[0].files.length == 0) {
+                alert("请选择文件");
+                return false;
+              }
+            } else {
+              alert("请输入" + element.id);
+              $(element).focus();
+              return false;
+            }
+          }
+        }
+
+        $("#tj").prop("disabled", true);
+        return true;
+      }
+
+      function requestForm() {
+        var form = $("form");
+        var id = $("input[name='Id']").val();
+        var json = arrayToJson(form.serializeArray());
+        var data = {
+          id: id,
+          value: json,
+        };
+
+        $.ajax({
+          url: "/form",
+          method: "post",
+          data: data,
+          success: function (data) {
+            window.location.reload();
+            alert("请求成功");
+          },
+          error: function (err) {
+            $("#tj").prop("disabled", false);
+            alert("请求失败");
+          },
+        });
+      }
+
+      function uploadImg() {
+        var files = $("input[type='file']");
+        if (files.length > 0) {
+          files.each((index, item) => {
+            if (files[index].files.length == 0) return;
+            var file = files[index].files[0];
+            var size = file.size;
+            if (size > 1024 * 1024 * 10) {
+              alert("上传的图片不允许超过10M");
+              return false;
+            }
+
+            var formData = new FormData();
+            formData.append("file", file);
+            $.ajax({
+              url: "/api/admin/media/upload/image",
+              // contentType: 'multipart/form-data',
+              contentType: false,
+              //取消帮我们格式化数据，是什么就是什么
+              processData: false,
+              data: formData,
+              method: "post",
+              timeout: 30000,
+              success: function (data) {
+                var input = $(item).prev("input").attr("value", data.data.url);
+
+                requestForm();
+              },
+              error: function (err) {
+                $("#tj").prop("disabled", false);
+                alert("上传失败");
+              },
+            });
+            return;
+          });
+        } else {
+          requestForm();
+        }
+      }
+
+      function arrayToJson(formArray) {
+        var dataArray = {};
+        $.each(formArray, function () {
+          if (dataArray[this.name]) {
+            if (!dataArray[this.name].push) {
+              dataArray[this.name] = [dataArray[this.name]];
+            }
+            dataArray[this.name].push(this.value || "");
+          } else {
+            dataArray[this.name] = this.value || "";
+          }
+        });
+        return JSON.stringify(dataArray);
+      }
+    </script>
+  </div>
+
+  {% render Footer %}
+
+</body>
+
+</html>

@@ -1,0 +1,73 @@
+<header>
+    <div class="headerweb clearfix">
+        <h3 class="logo"> <a href="{{Setting.WebsiteUrl}}"><img src="{{Setting.WebsiteLogo}}" alt=""></a>
+        </h3>
+        <div class="header-nav commonweb ">
+            <ul class="clearfix" id="curlist">
+                {% for nav in Menus %}
+                <li rel="{{nav.Id}}">
+                    <h3>
+                        {% if nav.Type == 0 %}
+                        <a href="/?mid={{nav.Id}}">{{nav.MenuName}}</a>
+                        {% else %}
+                        <a href="{{nav.ExternalUrl}}">{{nav.MenuName}}</a>
+                        {% endif %}
+                        <em class="phsearchicon"></em>
+                    </h3>
+                    {% if nav.Children.size > 0 %}
+                    <div class="sub-nav">
+                        {% for child in nav.Children %}
+                        <div class="sub-item">
+                            <h4>
+                                {% if child.Type == 0 %}
+                                <a href="/?mid={{child.Id}}" title="{{child.MenuName}}">{{child.MenuName}}</a>
+                                {% else %}
+                                <a href="{{child.ExternalUrl}}" title="{{child.MenuName}}">{{child.MenuName}}</a>
+                                {% endif %}
+                            </h4>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </li>
+                {% endfor %}
+                <div class="childMenu"> </div>
+            </ul>
+        </div>
+        <div class="header-right">
+            <div class="headcompany">
+                <a href="javascript:;" class="Currentlan">语言</a>
+                <div class="company-choose" style="display: none;">
+                    <a href="javascript:;" id="zh_cnlan">简体中文</a>
+                    <a href="javascript:;" id="enlan">English</a>
+                    <a href="javascript:;" id="zh_twlan">繁体</a>
+                </div>
+            </div>
+            <a href="javascript:;" class="mobnav-btn"> <span></span> <span></span> <span></span> </a>
+            <!--<div class="headlanguage"> <a href="" target="_blank" class="langbtn"></a> </div>-->
+        </div>
+        <div class="pcnavmenubtn"> <a href="javascript:;" class="pcnav-btn"> <span></span> <span></span> <span></span>
+            </a> </div>
+    </div>
+</header>
+<!--侧边导航-->
+<div class="headsideNav"> <a href="javascript:;" class="slide-colse"></a> <a href="{{Setting.WebsiteUrl}}"><img
+            src="{{Setting.WebsiteLogo}}" alt=""></a>
+    <div class="slide-nav">
+        {% for nav in Menus %}
+        <li rel="{{nav.Id}}" class="">
+            <h3><a href="/?mid={{nav.Id}}">{{nav.MenuName}}</a><em class="phsearchicon"></em></h3>
+            {% if nav.Children.size > 0 %}
+            <div class="sub-nav">
+                {% for child in nav.Children %}
+                <div class="sub-item">
+                    <h4><a href="/?mid={{child.Id}}" title="{{child.MenuName}}">{{child.MenuName}}</a></h4>
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </li>
+        {% endfor %}
+        <div class="childMenu"> </div>
+    </div>
+</div>
